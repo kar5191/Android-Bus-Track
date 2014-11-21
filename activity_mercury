@@ -52,13 +52,39 @@
         android:layout_marginLeft="41dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_toLeftOf="@+id/digitalClock1"
+        android:text="@string/currentTime" />
+
+    <DigitalClock
+        android:id="@+id/digitalClock1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/radioGroup2"
         android:layout_below="@+id/analogClock1"
-        android:layout_marginTop="48dp"
-        android:text="@string/retrieved_time"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginTop="26dp"
+        android:textStyle="bold"
+        android:text="@string/dclock" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/digitalClock1"
+        android:layout_marginTop="15dp"
+        android:text="@string/retrieved_time" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="15dp"
+        android:text="@string/retrieved_time" />
 
 </RelativeLayout>
