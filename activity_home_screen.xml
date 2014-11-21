@@ -12,27 +12,29 @@
         android:id="@+id/imageButton1"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/textView1"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/app_name"
         android:src="@drawable/orbit" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/merc"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/imageButton2"
+        android:layout_marginTop="65dp"
         android:text="@string/venus"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/imageButton1"
+        android:layout_marginTop="58dp"
+        android:text="@string/merc"
         android:textStyle="bold" />
 
     <ImageButton
@@ -40,7 +42,8 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignLeft="@+id/imageButton1"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/imageButton1"
+        android:layout_marginTop="44dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/orbitvenus" />
 
