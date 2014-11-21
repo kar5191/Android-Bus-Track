@@ -37,10 +37,16 @@ public class Mercury extends Activity {
 	        		// TODO Auto-generated method stub
 	        		//Intent intent = new Intent(getApplicationContext(), Mercury.class);
 	        		//startActivity(intent);
+	        		String AM_PM="AM";
 	        		Calendar cal = Calendar.getInstance(); 
 	        		int hours=cal.get(Calendar.HOUR_OF_DAY);
 	        		int minutes=cal.get(Calendar.MINUTE);
-	        		String time=Integer.toString(hours)+":"+Integer.toString(minutes);
+	        		String time="";
+	        		if(hours>12) {hours=hours%12;AM_PM="PM";}
+	        		if(minutes<10)
+	        			time=Integer.toString(hours)+":"+"0"+Integer.toString(minutes);
+	        		else
+	        			time=Integer.toString(hours)+":"+Integer.toString(minutes);
 	        		String time2=Integer.toString(hours)+":"+Integer.toString(minutes+16);
 	        		DBHelper helper=new DBHelper(Mercury.this);
 	        		 try {
@@ -63,7 +69,7 @@ public class Mercury extends Activity {
 	        			Log.i(getLocalClassName(), "SQL Exception");
 	        			throw sqle;
 	        		}
-	        		arrayList=helper.getDataMEast(time,time2);
+	        		arrayList=helper.getDataMEast(time,time2,AM_PM);
 	        		helper.close();
 	        		TextView textView=(TextView) findViewById(R.id.textView2);
 	        		textView.setText("Next Bus at TransitCentre: " +arrayList.get(0));
