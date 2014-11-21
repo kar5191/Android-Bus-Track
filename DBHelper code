@@ -166,11 +166,11 @@ import android.util.Log;
 		
 	}
      
-	public ArrayList<String>  getDataMEast(String time,String time2){
+	public ArrayList<String>  getDataMEast(String time,String time2,String am_pm){
 
 	    String Table_Name="Meast";
         ArrayList<String> list=new ArrayList<String>();
-	    String selectQuery = "SELECT  * FROM " + Table_Name +" WHERE Transit between " +"'"+time +"'"+" and " +"'"+time2+"'";
+	    String selectQuery = "SELECT  * FROM " + Table_Name +" WHERE Transit between " +"'"+time +"'"+" and " +"'"+time2+"'"+" and Transit like "+"'%"+am_pm+"'";
 	   // this.close();
 	          SQLiteDatabase db = this.getReadableDatabase();
 	       //   if(db.isOpen())
