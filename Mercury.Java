@@ -4,6 +4,7 @@ package com.example.orbittrack;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import datastore.DBHelper;
 import android.app.Activity;
@@ -36,6 +37,11 @@ public class Mercury extends Activity {
 	        		// TODO Auto-generated method stub
 	        		//Intent intent = new Intent(getApplicationContext(), Mercury.class);
 	        		//startActivity(intent);
+	        		Calendar cal = Calendar.getInstance(); 
+	        		int hours=cal.get(Calendar.HOUR_OF_DAY);
+	        		int minutes=cal.get(Calendar.MINUTE);
+	        		String time=Integer.toString(hours)+":"+Integer.toString(minutes);
+	        		String time2=Integer.toString(hours)+":"+Integer.toString(minutes+16);
 	        		DBHelper helper=new DBHelper(Mercury.this);
 	        		 try {
 	        			 
@@ -54,14 +60,16 @@ public class Mercury extends Activity {
 	        		helper.openDataBase();}
 	        		catch (SQLException sqle)
 	        		{
-	        			System.out.println("Hello");
+	        			Log.i(getLocalClassName(), "SQL Exception");
 	        			throw sqle;
 	        		}
-	        		arrayList=helper.getDataMEast();
+	        		arrayList=helper.getDataMEast(time,time2);
 	        		helper.close();
 	        		TextView textView=(TextView) findViewById(R.id.textView2);
-	        		textView.setText(arrayList.get(0));
-	        		Toast.makeText(getApplicationContext(),"Eastbound selected" , Toast.LENGTH_SHORT).show();
+	        		textView.setText("Next Bus at TransitCentre: " +arrayList.get(0));
+	        		TextView textView1=(TextView) findViewById(R.id.textView4);
+	        		textView1.setText("Arrives in McClintock at: " +arrayList.get(1));
+	        		//Toast.makeText(getApplicationContext(),"Eastbound selected" , Toast.LENGTH_SHORT).show();
 	        	}
 	        });
 		 
