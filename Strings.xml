@@ -14,4 +14,6 @@
     <string name="choose">Choose your route</string>
     <string name="title_activity_venus">Venus</string>
     <string name="retrieved_time"></string>
+    <string name="dclock">DigitalClock</string>
+    <string name="currentTime">Current Time: </string>
 </resources>
