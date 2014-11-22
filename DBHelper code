@@ -169,8 +169,12 @@ import android.util.Log;
 	public ArrayList<String>  getDataOrbit(String time,String time2,String am_pm,String bus){
 
 	    String Table_Name=bus;
+	    String selectQuery="";
         ArrayList<String> list=new ArrayList<String>();
-	    String selectQuery = "SELECT  * FROM " + Table_Name +" WHERE Transit between " +"'"+time +"'"+" and " +"'"+time2+"'"+" and Transit like "+"'%"+am_pm+"'";
+        if(Table_Name.equals("Meast"))
+        	selectQuery = "SELECT  * FROM " + Table_Name +" WHERE Transit between " +"'"+time +"'"+" and " +"'"+time2+"'"+" and Transit like "+"'%"+am_pm+"'";
+        else if(Table_Name.equals("mwest"))
+        	selectQuery = "SELECT  * FROM " + Table_Name +" WHERE Escalante between " +"'"+time +"'"+" and " +"'"+time2+"'"+" and Transit like "+"'%"+am_pm+"'";
 	   // this.close();
 	          SQLiteDatabase db = this.getReadableDatabase();
 	       //   if(db.isOpen())
