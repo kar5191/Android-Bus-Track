@@ -166,9 +166,9 @@ import android.util.Log;
 		
 	}
      
-	public ArrayList<String>  getDataMEast(String time,String time2,String am_pm){
+	public ArrayList<String>  getDataOrbit(String time,String time2,String am_pm,String bus){
 
-	    String Table_Name="Meast";
+	    String Table_Name=bus;
         ArrayList<String> list=new ArrayList<String>();
 	    String selectQuery = "SELECT  * FROM " + Table_Name +" WHERE Transit between " +"'"+time +"'"+" and " +"'"+time2+"'"+" and Transit like "+"'%"+am_pm+"'";
 	   // this.close();
