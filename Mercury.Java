@@ -37,17 +37,24 @@ public class Mercury extends Activity {
 	        		// TODO Auto-generated method stub
 	        		//Intent intent = new Intent(getApplicationContext(), Mercury.class);
 	        		//startActivity(intent);
-	        		String AM_PM="AM";
+	        		/*String AM_PM="AM";
 	        		Calendar cal = Calendar.getInstance(); 
 	        		int hours=cal.get(Calendar.HOUR_OF_DAY);
 	        		int minutes=cal.get(Calendar.MINUTE);
 	        		String time="";
+	        		String time2="";
 	        		if(hours>12) {hours=hours%12;AM_PM="PM";}
 	        		if(minutes<10)
 	        			time=Integer.toString(hours)+":"+"0"+Integer.toString(minutes);
 	        		else
 	        			time=Integer.toString(hours)+":"+Integer.toString(minutes);
-	        		String time2=Integer.toString(hours)+":"+Integer.toString(minutes+16);
+	        		if(minutes+16>60)
+	        		{
+	        			minutes=minutes%60;
+	        			time2=Integer.toString(hours+1)+":"+Integer.toString(minutes);
+	        		}
+	        		else
+	        			time2=Integer.toString(hours)+":"+Integer.toString(minutes+16);
 	        		DBHelper helper=new DBHelper(Mercury.this);
 	        		 try {
 	        			 
@@ -71,11 +78,18 @@ public class Mercury extends Activity {
 	        		}
 	        		arrayList=helper.getDataMEast(time,time2,AM_PM);
 	        		helper.close();
+	        		
 	        		TextView textView=(TextView) findViewById(R.id.textView2);
+	  	       		TextView textView1=(TextView) findViewById(R.id.textView4);
+	        		if(!arrayList.isEmpty())
+	        		{
 	        		textView.setText("Next Bus at TransitCentre: " +arrayList.get(0));
-	        		TextView textView1=(TextView) findViewById(R.id.textView4);
 	        		textView1.setText("Arrives in McClintock at: " +arrayList.get(1));
 	        		//Toast.makeText(getApplicationContext(),"Eastbound selected" , Toast.LENGTH_SHORT).show();
+	        		}
+	        		else
+	        		textView.setText("There are no buses plying at this time.");*/
+	        		dbCall("East");
 	        	}
 	        });
 		 
@@ -111,4 +125,64 @@ public class Mercury extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void dbCall(String east_west)
+	{
+		String AM_PM="AM";
+		Calendar cal = Calendar.getInstance(); 
+		int hours=cal.get(Calendar.HOUR_OF_DAY);
+		int minutes=cal.get(Calendar.MINUTE);
+		String time="";
+		String time2="";
+		if(hours>12) {hours=hours%12;AM_PM="PM";}
+		if(minutes<10)
+			time=Integer.toString(hours)+":"+"0"+Integer.toString(minutes);
+		else
+			time=Integer.toString(hours)+":"+Integer.toString(minutes);
+		if(minutes+16>60)
+		{
+			minutes=minutes%60;
+			time2=Integer.toString(hours+1)+":"+Integer.toString(minutes);
+		}
+		else
+			time2=Integer.toString(hours)+":"+Integer.toString(minutes+16);
+		DBHelper helper=new DBHelper(Mercury.this);
+		 try {
+			 
+			 helper.createDataBase();
+			 Log.i(getLocalClassName(), "Called create db");
+			  
+			 } catch (IOException ioe) {
+			  
+				 Log.i(getCallingPackage(), "IOexception in calling create");
+			 throw new Error("Unable to create database");
+			  
+			 }
+		ArrayList<String> arrayList=new ArrayList<String>();
+		try{
+			Log.i(getLocalClassName(), "Calling open db");
+		helper.openDataBase();}
+		catch (SQLException sqle)
+		{
+			Log.i(getLocalClassName(), "SQL Exception");
+			throw sqle;
+		}
+		if(east_west.equals("East"))
+		arrayList=helper.getDataMEast(time,time2,AM_PM);
+		//else
+		//arrayList=helper.ge	
+		helper.close();
+		
+		TextView textView=(TextView) findViewById(R.id.textView2);
+     		TextView textView1=(TextView) findViewById(R.id.textView4);
+		if(!arrayList.isEmpty())
+		{
+		textView.setText("Next Bus at TransitCentre: " +arrayList.get(0));
+		textView1.setText("Arrives in McClintock at: " +arrayList.get(1));
+		//Toast.makeText(getApplicationContext(),"Eastbound selected" , Toast.LENGTH_SHORT).show();
+		}
+		else
+		textView.setText("There are no buses plying at this time.");
+	}
+	
 }
