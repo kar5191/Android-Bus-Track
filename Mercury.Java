@@ -89,7 +89,7 @@ public class Mercury extends Activity {
 	        		}
 	        		else
 	        		textView.setText("There are no buses plying at this time.");*/
-	        		dbCall("East");
+	        		dbCall("Meast");
 	        	}
 	        });
 		 
@@ -102,7 +102,8 @@ public class Mercury extends Activity {
 		        		// TODO Auto-generated method stub
 		        		//Intent intent = new Intent(getApplicationContext(), Mercury.class);
 		        		//startActivity(intent);
-		        		Toast.makeText(getApplicationContext(),"Westbound selected" , Toast.LENGTH_LONG).show();
+		        		//Toast.makeText(getApplicationContext(),"Westbound selected" , Toast.LENGTH_LONG).show();
+		        		dbCall("mwest");
 		        	}
 		        });
 	}
@@ -134,7 +135,7 @@ public class Mercury extends Activity {
 		int minutes=cal.get(Calendar.MINUTE);
 		String time="";
 		String time2="";
-		if(hours>12) {hours=hours%12;AM_PM="PM";}
+		if(hours>12 && hours!=23) {hours=hours%12;AM_PM="PM";}
 		if(minutes<10)
 			time=Integer.toString(hours)+":"+"0"+Integer.toString(minutes);
 		else
@@ -142,6 +143,9 @@ public class Mercury extends Activity {
 		if(minutes+16>60)
 		{
 			minutes=minutes%60;
+			if(minutes<10)
+				time2=Integer.toString(hours)+":"+"0"+Integer.toString(minutes);
+			else
 			time2=Integer.toString(hours+1)+":"+Integer.toString(minutes);
 		}
 		else
@@ -167,8 +171,8 @@ public class Mercury extends Activity {
 			Log.i(getLocalClassName(), "SQL Exception");
 			throw sqle;
 		}
-		if(east_west.equals("East"))
-		arrayList=helper.getDataMEast(time,time2,AM_PM);
+		//if(east_west.equals("East"))
+		arrayList=helper.getDataOrbit(time,time2,AM_PM,east_west);
 		//else
 		//arrayList=helper.ge	
 		helper.close();
