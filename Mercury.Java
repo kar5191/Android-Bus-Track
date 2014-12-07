@@ -80,15 +80,29 @@ public class Mercury extends Activity {
 		String AM_PM="AM";
 		Calendar cal = Calendar.getInstance(); 
 		int hours=cal.get(Calendar.HOUR_OF_DAY);
+		int day_of_week=cal.get(Calendar.DAY_OF_WEEK);		
 		int minutes=cal.get(Calendar.MINUTE);
 		String time="";
 		String time2="";
+		
+		switch(day_of_week)
+		{
+		case 1:
+			if(east_west.equals("Meast"))east_west="meast_sun";
+			else east_west="mwest_sun";
+			break;
+		case 7:
+			if(east_west.equals("Meast")) east_west="meast_Sat";
+			else east_west="mwest_sat";
+		}
+		
+		if(hours==12){AM_PM="PM";}
 		if(hours>12 && hours!=23) {hours=hours%12;AM_PM="PM";}
 		if(minutes<10)
 			time=Integer.toString(hours)+":"+"0"+Integer.toString(minutes);
 		else
 			time=Integer.toString(hours)+":"+Integer.toString(minutes);
-		if(minutes+16>60)
+		if(minutes+31>=60)
 		{
 			minutes=minutes%60;
 			if(minutes<10)
@@ -97,7 +111,8 @@ public class Mercury extends Activity {
 			time2=Integer.toString(hours+1)+":"+Integer.toString(minutes);
 		}
 		else
-			time2=Integer.toString(hours)+":"+Integer.toString(minutes+16);
+			time2=Integer.toString(hours)+":"+Integer.toString(minutes+31);
+		
 		DBHelper helper=new DBHelper(Mercury.this);
 		 try {
 			 
@@ -120,7 +135,7 @@ public class Mercury extends Activity {
 			throw sqle;
 		}
 		//if(east_west.equals("East"))
-		arrayList=helper.getDataOrbit(time,time2,AM_PM,east_west);
+		arrayList=helper.getDataOrbit(time,time2,AM_PM,east_west,day_of_week);
 		//else
 		//arrayList=helper.ge	
 		helper.close();
@@ -130,18 +145,18 @@ public class Mercury extends Activity {
      	TextView textView2=(TextView) findViewById(R.id.textView5);	
 		if(!arrayList.isEmpty())
 		{
-			if(east_west.equals("Meast"))
+			if(east_west.equals("Meast")||east_west.equals("meast_Sat")||east_west.equals("meast_sun"))
 			{
 				textView.setText("Next Bus at Transit Center: " +arrayList.get(0));
-				textView1.setText("Arrives in McClintock at: " +arrayList.get(1));
-				textView2.setText("Reaches Escalante Center at: " +arrayList.get(2));
+			   textView1.setText("Arrives in McClintock: " +arrayList.get(1));
+			   textView2.setText("Reaches Escalante: " +arrayList.get(2));
 		//Toast.makeText(getApplicationContext(),"Eastbound selected" , Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				textView.setText("Next Bus at Escalante Center: " +arrayList.get(0));
-				textView1.setText("Arrives in McClintock at:   " +arrayList.get(1));
-				textView2.setText("Reaches Transit Center at:  " +arrayList.get(2));
+				textView.setText("Next Bus at Escalante: " +arrayList.get(0));
+			   textView1.setText("Arrives in McClintock: " +arrayList.get(1));
+			   textView2.setText("Reaches Transit Center: " +arrayList.get(2));
 			}
 		}
 		else
