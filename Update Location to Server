@@ -1,0 +1,246 @@
+package com.example.orbittrack;
+
+import java.util.Calendar;
+import java.util.Currency;
+import java.util.Date;
+
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.provider.Telephony.Sms.Conversations;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.Parse;
+import com.parse.ParseACL;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+
+@TargetApi(Build.VERSION_CODES.HONEYCOMB) public class MainActivity extends Activity implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
+	  LatLng currLocation; 
+	  
+	  private GoogleMap map;
+	  private LocationManager locationManager;
+	  	  
+	  Location location;
+	  Marker hamburg;	 
+	  
+	  long mintime = 10000;
+	  float mindist = 10;
+	  Context cntxt = this;
+	  
+	  String busname;
+	  
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        busname = getIntent().getStringExtra("busname");
+        
+        Parse.initialize(this, "gFgd64ShJ5ITtxItlwkJO7mTfdtfTIx4AvZHhriW", "12Sp82uQlUgUVp52sF6miUc5K8QkCk1X4Nrb3ogG");        
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                .getMap();       
+        GetLocation();
+    }
+    
+    @Override
+    public void onStart() {
+        super.onStart();
+        //GetLocation();
+    }
+    
+    @Override
+	public synchronized void onResume(){
+		super.onResume();		
+		boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		if (isGpsEnabled){
+			GetLocation();
+		}
+	}
+    
+	@Override
+	protected void onStop() {
+	    super.onStop();	    
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}	
+	
+	public void GetLocation()
+	{
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, mintime, mindist, this);
+        
+        boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);       
+        
+        if ( !isGpsEnabled){
+        	AlertDialog.Builder gpsalert = new AlertDialog.Builder(cntxt);
+        	gpsalert.setMessage("Want to Switch on GPS?")
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				
+				@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+					startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
+					}
+				})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub									
+						Toast.makeText(getApplicationContext(), "Please switch on the GPS to view the location", Toast.LENGTH_LONG).show();
+					}
+				});
+        		AlertDialog alertDialog = gpsalert.create();
+        		alertDialog.show();        		
+        }
+	}
+    
+    public void UpdateLocationToServer(double lat, double lng){
+    	//Write the code to update the latitude and longitude values to the server.
+    	String devicename = android.os.Build.MODEL;
+    	
+    	/*ParseObject testObject = new ParseObject("Test");
+     	ParseUser.enableAutomaticUser();
+     	ParseACL defaultACL=new ParseACL();
+     	defaultACL.setPublicReadAccess(true);
+     	defaultACL.setPublicWriteAccess(false);
+     	ParseACL.setDefaultACL(defaultACL, true);         	
+     	testObject.put("Latitude", Double.toString(lat));
+     	testObject.put("Longitude", Double.toString(lng));
+     	Calendar c = Calendar.getInstance();
+     	Date dt = c.getTime();
+     	testObject.put("UDate", dt.toString());
+     	testObject.put("DName", devicename);
+     	testObject.put("ACL", defaultACL);
+     	testObject.saveInBackground();*/
+    	
+    	//Added parse code for new class created in parse.com
+    	Log.d("UpdateLoctoServer","Creating ParseObject");
+    	ParseObject testObject = new ParseObject("OrbitTrack");
+     	ParseUser.enableAutomaticUser();
+     	ParseACL defaultACL=new ParseACL();
+     	defaultACL.setPublicReadAccess(true);
+     	defaultACL.setPublicWriteAccess(false);
+     	ParseACL.setDefaultACL(defaultACL, true);
+     	Log.d("UpdateLoctoServer","uploading latitude to server");
+     	testObject.put("Latitude", Double.toString(lat));
+     	testObject.put("Longitude", Double.toString(lng));
+     	Calendar c = Calendar.getInstance();
+     	Date dt = c.getTime();
+     	testObject.put("DateTime", dt.toString());
+     	testObject.put("DName", devicename);
+     	testObject.put("BusName", busname);
+     	testObject.put("ACL", defaultACL);
+     	testObject.saveInBackground();
+    }
+    
+    @Override
+    public void onLocationChanged(Location location) {    	
+    	
+        if(hamburg != null){
+            hamburg.remove();
+        }
+    	    	
+        double lat = 0;
+        double lng = 0;
+        lat = location.getLatitude();
+        lng = location.getLongitude();
+        Log.d("OnLocationChanged","Calling UpdateLocationToServer");
+        UpdateLocationToServer(lat, lng);
+        currLocation = new LatLng(lat, lng);
+       
+        hamburg = map.addMarker(new MarkerOptions().position(currLocation)
+            		.title("Current Location"));
+        
+        float zoom = map.getCameraPosition().zoom;
+        if (zoom < 14){
+        	zoom = 14;
+            // Move the camera instantly to hamburg with a zoom of 15.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currLocation, zoom));
+
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 10000, null); 
+        }                   
+     
+    }
+    @Override
+    public void onProviderEnabled(String provider) {
+      Toast.makeText(this, "Enabled new provider " + provider,
+          Toast.LENGTH_SHORT).show();
+
+    }
+    @Override
+    public void onProviderDisabled(String provider) {
+    	Toast.makeText(this, "Disabled provider " + provider,
+          Toast.LENGTH_SHORT).show();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		Log.d("Latitude","status");
+	}
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onConnected(Bundle arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}		
+}
