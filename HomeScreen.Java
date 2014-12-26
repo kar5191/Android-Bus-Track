@@ -1,3 +1,7 @@
+/* The home screen of the application. Contains two image buttons. 
+The user chooses the bus on which they are going to travel/or are travelling in
+*/
+
 package com.example.orbittrack;
 
 
