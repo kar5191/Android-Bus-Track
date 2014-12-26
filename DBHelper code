@@ -169,6 +169,7 @@ import android.util.Log;
 	public ArrayList<String>  getDataOrbit(String time,String time2,String am_pm,String bus,int day_of_week){
 
 	    String Table_Name=bus;
+	    Log.d("In DB",Table_Name);
 	    String selectQuery="";
         ArrayList<String> list=new ArrayList<String>();
         //if(Table_Name.equals("Meast")||Table_Name.equals("venus_f")||Table_Name.equals("venus_back"))
@@ -184,6 +185,16 @@ import android.util.Log;
 	        //	  db.close();
 	          Log.i(DB_NAME, "ready to exec query");
 	    Cursor cursor = db.rawQuery(selectQuery, null);
+	    
+	    if(!cursor.moveToFirst())
+	    {
+	    	
+	        	selectQuery = "SELECT  * FROM " + Table_Name +" WHERE _id='1'";
+	        	Log.d("Empty cursor","In here");
+	    	
+	    }
+	    
+	    cursor = db.rawQuery(selectQuery, null);
 	             //String[] data = null;
 	    if (cursor.moveToFirst()) {
 	        do {
@@ -193,6 +204,7 @@ import android.util.Log;
 	        	list.add(cursor.getString(3));
 	        } while (cursor.moveToNext());
 	    }
+	   
 	    db.close();
 	    return list;
 	}
