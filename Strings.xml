@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="live">Update to server</string>
     <string name="app_name">OrbitTrack</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Uploading location to server&#8230;</string>
     <string name="action_settings">Settings</string>
     <string name="merc">MERCURY</string>
     <string name="venus">VENUS</string>
     <string name="title_activity_mercury">Mercury</string>
-    <string name="m_east">Mercury Eastbound</string>
-    <string name="m_west">Mercury Westbound</string>
-    <string name="venus_f">Venus Forward</string>
-    <string name="venus_b">Venus Back</string>
+    <string name="m_east">Eastbound</string>
+    <string name="m_west">Westbound</string>
+    <string name="venus_f">Forward</string>
+    <string name="venus_b">Back</string>
     <string name="choose">Choose your route</string>
     <string name="title_activity_venus">Venus</string>
     <string name="retrieved_time"></string>
+    <string name="hints">Time at stop</string>
     <string name="dclock">DigitalClock</string>
-    <string name="currentTime">Current Time: </string>
+    <string name="currentTime">Current Time:&#160;</string>
+    <string name="title_activity_track">Live Updates</string>
+    <string name="title_activity_main">Share Location</string>
+    <string name="title_activity_get_loc">Live Updates</string>
+
 </resources>
