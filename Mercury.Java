@@ -1,3 +1,9 @@
+/* Schedule information of the Mercury buses retrieved from the database. 
+Includes buttons to upload as well as retrieve current location of the bus.
+*/
+
+
+
 package com.example.orbittrack;
 
 
@@ -16,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,10 +30,41 @@ import android.widget.Toast;
 
 public class Mercury extends Activity {
 
+	String busname="MEast";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mercury);
+		ImageButton ibutton=(ImageButton) findViewById(R.id.imageButton1);
+		ibutton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				/*try {
+					//Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+				Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+				intent.putExtra("busname", busname);
+				startActivity(intent);
+			}
+		});
+		
+		ImageButton ibutton2=(ImageButton) findViewById(R.id.imageButton2);
+		ibutton2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent2=new Intent(getApplicationContext(),GetLoc.class);
+				intent2.putExtra("busname", busname);
+				startActivity(intent2);
+			}
+		});
+		
 		//RadioGroup radio = (RadioGroup) findViewById(R.id.radioGroup2);
 		RadioButton btn0 = (RadioButton) findViewById(R.id.radio0);
         //DBHelper helper=null;
@@ -38,6 +76,7 @@ public class Mercury extends Activity {
 	        		//Intent intent = new Intent(getApplicationContext(), Mercury.class);
 	        		//startActivity(intent);
 	        		dbCall("Meast");
+	        		busname="MEast";
 	        	}
 	        });
 		 
@@ -52,6 +91,7 @@ public class Mercury extends Activity {
 		        		//startActivity(intent);
 		        		//Toast.makeText(getApplicationContext(),"Westbound selected" , Toast.LENGTH_LONG).show();
 		        		dbCall("mwest");
+		        		busname = "MWest";
 		        	}
 		        });
 	}
@@ -95,7 +135,7 @@ public class Mercury extends Activity {
 			if(east_west.equals("Meast")) east_west="meast_Sat";
 			else east_west="mwest_sat";
 		}
-		
+	
 		if(hours==12){AM_PM="PM";}
 		if(hours>12 && hours!=23) {hours=hours%12;AM_PM="PM";}
 		if(minutes<10)
