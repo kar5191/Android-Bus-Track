@@ -1,3 +1,7 @@
+/*
+Schedule information about venus buses. Venus is one of the free buses operating in Tempe.*/
+
+
 package com.example.orbittrack;
 
 import java.io.IOException;
