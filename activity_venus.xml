@@ -17,7 +17,7 @@
         android:layout_alignLeft="@+id/radioGroup2"
         android:layout_alignParentTop="true"
         android:text="@string/choose"
-        android:textStyle="bold"
+        
         android:textSize="15sp" />
 
     <RadioGroup
@@ -45,32 +45,12 @@
             android:text="@string/venus_b" />
     </RadioGroup>
 
-    <AnalogClock
+     <AnalogClock
         android:id="@+id/analogClock1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/radioGroup2"
-        android:layout_centerHorizontal="true" />
-
-    <DigitalClock
-        android:id="@+id/digitalClock1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/analogClock1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
-        android:textStyle="bold"
-        android:text="@string/dclock" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/digitalClock1"
-        android:layout_alignBottom="@+id/digitalClock1"
-        android:layout_alignLeft="@+id/radioGroup2"
-        android:layout_marginLeft="16dp"
-        android:text="@string/currentTime" />
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/textView3"
@@ -79,6 +59,8 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="20dp"
+        android:hint="@string/hints"
+        android:textStyle="italic"
         android:text="@string/retrieved_time" />
 
     <TextView
@@ -88,6 +70,8 @@
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="20dp"
+        android:hint="@string/hints"
+        android:textStyle="italic"
         android:text="@string/retrieved_time" />
 
     <TextView
@@ -97,7 +81,26 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_below="@+id/textView4"
         android:layout_marginTop="20dp"
+        android:hint="@string/hints"
+        android:textStyle="italic"
         android:text="@string/retrieved_time" />
+
+    <DigitalClock
+        android:id="@+id/digitalClock1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView3"
+        android:layout_toRightOf="@+id/textView2"
+        android:text="@string/dclock" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/radioGroup2"
+        android:layout_below="@+id/radioGroup2"
+        android:layout_marginTop="18dp"
+        android:text="@string/currentTime" />
 
 </RelativeLayout>
 
